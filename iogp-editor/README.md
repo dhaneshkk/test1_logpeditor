@@ -152,7 +152,7 @@ iogp --catalog my_site.json serve                              # your own detect
 
 ## Guarantees and measurements
 
-* **Lean 4** (`formal/IogpAlerts.lean`, core only, 33 theorems, checked with Lean 4.15 and 4.25):
+* **Lean 4** (`formal/IogpAlerts.lean`, core only, 35 theorems, checked with Lean 4.15 and 4.25):
   * evidence smoothing: observation ⇒ belief; grace 0 is exact; monotone in grace; no evidence ⇒ no belief
   * **negated durations are exact**: "not believed throughout [T−D, T]" ⇔ "not observed throughout [T−D−g, T]". So a single missed frame never fires a "does not wear" rule, and a real absence is never reported late.
   * positive durations bridge gaps ≤ grace
@@ -165,10 +165,11 @@ iogp --catalog my_site.json serve                              # your own detect
   * **audit log**: with injective hashing, the head hash commits to the whole history, so any edit, removal or reordering is detected
   * **four-eyes**: every approved, and therefore exported, version was approved by someone other than its author; every workflow step preserves this
   * **exceptions and scoping only suppress alerts**: "unless E" ≡ "and not E"; more exceptions mean fewer alerts; narrower candidate zones mean fewer bindings
+  * **parity reference RNG** (`src/yappu_ref.rs`): the port of Python's `random()` stays below 1 and its rejection-sampled `choice` index is always in range
 * **MCC**:
   * acceptance set (14 valid / 16 invalid sentences, including scoping and exceptions): 1.0
   * replay of the synthetic sample site (2 cameras, 3 labelled incidents): 3/3 caught, 0 false alarms, median latency 3.6 s, frame MCC 0.90
-  * parity against yappu-fsm's own EventEngine (1800 frames, 3 rules): 0.9998; the one differing frame is a float-rounding artefact in yappu (`2.9999999999999996 < 3`)
+  * parity against yappu-fsm's own EventEngine (1800 frames, 3 rules; reference frames from `iogp_eval yappu-ref`, a Rust port of yappu's engine that reproduces the Python output byte for byte): 0.9998; the one differing frame is a float-rounding artefact in yappu (`2.9999999999999996 < 3`)
   * synthetic site: 6 workers, 9 LSR rules, 600 s at 10 fps; the ground truth is the ideal evaluator on noise-free detections; random dropped detections:
 
     | missed detections | iogp engine | yappu timers | per-frame |
@@ -196,6 +197,6 @@ iogp-runtime/             inference crate: fast + reference engines, config load
 src/web.rs                UI + OpenAI-compatible API      src/bin/iogp.rs, iogp_eval.rs
 src/suggest.rs            auto-suggestion engine          src/editor.js         auto-suggest text box
 src/asp.rs                rules -> clingo program; review (example scenes, dead rules, implications, coverage)
-tools/yappu_parity.py     yappu-fsm reference frames      formal/IogpAlerts.lean
+src/yappu_ref.rs          yappu-fsm engine port (parity)  formal/IogpAlerts.lean
 tools/sample_vg360_log.py synthetic raw site log + labels
 ```

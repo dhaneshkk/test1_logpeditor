@@ -36,6 +36,8 @@
       i+1) is exactly the start of the current streak: every frame from r(i) to i satisfies the
       condition, and the frame before r(i) does not. So "T - S >= D" in the encoding is the
       runtime timer's "held for at least D".
+  §11 yappu_ref.rs (Rust port of Python's random.Random for the yappu-fsm parity scenario):
+      random() < 1 (53-bit numerator bound) and choice's rejection sampler returns an index < n.
 -/
 
 /-! ## §1 Evidence smoothing -/
@@ -406,3 +408,29 @@ theorem runStart_maximal (h : Nat → Bool) :
     by_cases hn : h n = true
     · rw [if_pos hn] at hp ⊢; exact ih hp
     · rw [if_neg hn]; simp only [Nat.add_sub_cancel]; simpa using hn
+
+/-! ## §11 Python's `random.Random`, as ported in yappu_ref.rs (the yappu-fsm parity scenario).
+  `random()` combines the top 27 and 26 bits of two MT19937 words: `(a·2^26 + b) / 2^53`.
+  The numerator is always below 2^53, so the value is in [0, 1); and `choice` samples by
+  rejection, returning only indices below the sequence length. -/
+
+/-- The 53-bit numerator of `random()` is below 2^53 (words < 2^32, shifts 5 and 6, ×2^26), so `random()` < 1. -/
+theorem py_random_numerator_lt (w1 w2 : Nat) (h1 : w1 < 4294967296) (h2 : w2 < 4294967296) :
+    (w1 / 32) * 67108864 + w2 / 64 < 9007199254740992 := by
+  omega
+
+/-- `_randbelow` by rejection: whatever the stream of k-bit draws, a returned index is below n. -/
+def randbelow (n : Nat) : List Nat → Option Nat
+  | [] => none
+  | r :: rs => if r < n then some r else randbelow n rs
+
+theorem randbelow_lt (n : Nat) : ∀ rs i, randbelow n rs = some i → i < n := by
+  intro rs
+  induction rs with
+  | nil => intro i h; simp [randbelow] at h
+  | cons r rs ih =>
+    intro i h
+    simp only [randbelow] at h
+    by_cases hr : r < n
+    · rw [if_pos hr] at h; cases h; exact hr
+    · rw [if_neg hr] at h; exact ih i h

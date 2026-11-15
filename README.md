@@ -16,7 +16,7 @@ then VisionGuard raises a critical working-at-height-alert for the worker.
 | [`iogp-editor/iogp-runtime/`](iogp-editor/iogp-runtime) | **The inference library** the detection pipeline links: loads `config.json`, evaluates frames (2–40 µs per frame), Rust API and C ABI, depends only on serde |
 | [`notebooks/`](notebooks) | A single-cell Colab notebook that builds and verifies everything: tests, MCC, Lean proofs, editor and API checks, clingo review, runtime benchmark |
 
-Formal guarantees are in `iogp-editor/formal/IogpAlerts.lean` (33 theorems, Lean 4.15/4.25).
+Formal guarantees are in `iogp-editor/formal/IogpAlerts.lean` (35 theorems, Lean 4.15/4.25).
 Each crate's README has the details.
 
 ## Requirements
@@ -44,8 +44,9 @@ cargo test --release                                  # editor tests (APE, cling
 ```
 
 The crates use relative path dependencies (`iogp-editor` → `../ape-rs`, `../acewiki-rs`), so keep
-this layout. `iogp-editor/tools/yappu_parity.py` compares against yappu-fsm's own engine and
-needs a checkout of yappu-fsm passed as its first argument.
+this layout. The yappu-fsm parity check needs no Python or yappu checkout:
+`iogp_eval yappu-ref frames.jsonl` regenerates the reference frames with a Rust port of yappu-fsm's
+vision engine (byte-identical to the original Python output), then `iogp_eval parity frames.jsonl`.
 
 ## Licence
 

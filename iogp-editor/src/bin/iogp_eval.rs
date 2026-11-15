@@ -1,5 +1,7 @@
 //! iogp-eval — MCC evaluation of compiled alert rules.
 //!
+//!   iogp-eval yappu-ref FRAMES.jsonl [--seed 459]
+//!       regenerate yappu-fsm's parity frames with the Rust port of its vision engine
 //!   iogp-eval parity FRAMES.jsonl [--rules tools/yappu_parity_rules.ace]
 //!       replay yappu-fsm's per-frame facts; compare active alerts with yappu's own engine
 //!   iogp-eval synthetic [--seconds 600] [--miss 0.25] [--seed 459]
@@ -45,6 +47,8 @@ enum Cmd {
         #[arg(long)] frames_out: Option<PathBuf>,
     },
     Corpus { attempts: PathBuf, #[arg(long)] store: Option<PathBuf> },
+    /// regenerate the yappu-fsm parity frames (Rust port of yappu's vision engine; no Python)
+    YappuRef { out: PathBuf, #[arg(long, default_value_t = 459)] seed: u64 },
 }
 
 #[derive(Default, Clone, Copy)]
@@ -172,6 +176,12 @@ fn score(truth: &[BTreeSet<(String, String)>], pred: &[BTreeSet<(String, String)
 fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
     let cat = match &cli.cmd { Cmd::Replay { catalog: Some(p), .. } => Catalog::from_json(&std::fs::read_to_string(p)?)?, _ => Catalog::builtin() };
+    if let Cmd::YappuRef { out, seed } = &cli.cmd {
+        let lines = iogp_editor::yappu_ref::parity_frames(*seed);
+        std::fs::write(out, lines.join("\n") + "\n")?;
+        println!("yappu-ref: {} frames -> {}", lines.len(), out.display());
+        return Ok(());
+    }
     if let Cmd::Corpus { attempts, store } = &cli.cmd {
         let r = corpus(attempts, store.as_ref())?;
         if let Some(p) = cli.report { std::fs::write(p, serde_json::to_string_pretty(&r)?)?; }
@@ -202,7 +212,7 @@ fn main() -> anyhow::Result<()> {
         Cmd::Replay { site, detections, rules, store, labels, tolerance, frames_out, .. } => {
             replay(&mut c, &cat, &site, &detections, rules.as_ref(), store.as_ref(), labels.as_ref(), tolerance, frames_out.as_ref())?
         }
-        Cmd::Corpus { .. } => unreachable!(),
+        Cmd::Corpus { .. } | Cmd::YappuRef { .. } => unreachable!(),
         Cmd::Synthetic { seconds, miss, seed } => {
             let rules: Vec<Rule> = cat.templates.iter().map(|t| c.compile(&format!("LSR{}", t.lsr), &t.text).map_err(|e| anyhow::anyhow!("LSR{}: {:?}", t.lsr, e))).collect::<anyhow::Result<_>>()?;
             let (truth, noisy) = world(seconds, miss, seed);

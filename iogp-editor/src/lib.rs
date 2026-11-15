@@ -17,6 +17,7 @@ pub mod runtime;
 pub mod store;
 pub mod suggest;
 pub mod web;
+pub mod yappu_ref;
 
 use ape_rs::Ape;
 use catalog::Catalog;
