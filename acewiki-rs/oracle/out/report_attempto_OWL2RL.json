@@ -1,0 +1,129 @@
+{
+  "elements": 537,
+  "load_seconds": 10.895368428,
+  "parser": {
+    "abstract_options_identical": 7273,
+    "complete": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 5548,
+      "tp": 1725
+    },
+    "concrete_count_identical": 7273,
+    "concrete_options_identical": 7273,
+    "examples": [],
+    "prefixes": 7273,
+    "reference_identical": 7273,
+    "seconds": 31.166133562
+  },
+  "profile": "OWL2RL",
+  "reasoning": {
+    "answers": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 47746,
+      "tp": 500
+    },
+    "consistent": {
+      "java": true,
+      "rs": true
+    },
+    "examples": [],
+    "instances": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 37238,
+      "tp": 604
+    },
+    "questions_exact": "102/102",
+    "reasoner": "acewiki-rs native OWL 2 RL",
+    "satisfiable": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 0,
+      "tp": 102
+    },
+    "seconds": 1.357424494,
+    "sub": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 10215,
+      "tp": 87
+    },
+    "super": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 10215,
+      "tp": 87
+    },
+    "types": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 37238,
+      "tp": 604
+    }
+  },
+  "sentences": {
+    "examples": [],
+    "flags": {
+      "integrated": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 168,
+        "tp": 810
+      },
+      "owl": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 3,
+        "tp": 975
+      },
+      "owlswrl": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 3,
+        "tp": 975
+      },
+      "question": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 876,
+        "tp": 102
+      },
+      "reasonable": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 267,
+        "tp": 711
+      }
+    },
+    "n": 978,
+    "parser_tokens_identical": 978,
+    "text_identical": 978
+  },
+  "wiki": "attempto"
+}

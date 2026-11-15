@@ -1,0 +1,24 @@
+[package]
+name = "ape-rs"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.98"
+description = "Attempto Parsing Engine (ACE -> DRS/FOL/OWL/...) hosted in Rust on the Scryer Prolog engine"
+license = "LGPL-3.0-or-later"   # APE is LGPL-3.0; Scryer is BSD-3-Clause
+
+[dependencies]
+# fork branch with the read/1 end-of-file fix (dhaneshkk/scryer-prolog#fix/ape-rs-findings)
+scryer-prolog = { git = "https://github.com/dhaneshkk/scryer-prolog", branch = "fix/ape-rs-findings", default-features = false }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tiny_http = "0.12"
+clap = { version = "4", features = ["derive"] }
+url = "2"
+regex = "1"
+
+[profile.release]
+debug = false
+
+[[bin]]
+name = "ape-parity"
+path = "src/bin/ape_parity.rs"

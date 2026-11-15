@@ -1,0 +1,28 @@
+{
+  "acceptance_scryer_vs_gold": {
+    "fn": 130,
+    "fp": 0,
+    "mcc": 0.914165,
+    "tn": 920,
+    "tp": 2683
+  },
+  "acceptance_scryer_vs_swi": {
+    "fn": 0,
+    "fp": 0,
+    "mcc": 1.0,
+    "tn": 1050,
+    "tp": 2683
+  },
+  "acceptance_swi_vs_gold": {
+    "fn": 130,
+    "fp": 0,
+    "mcc": 0.914165,
+    "tn": 920,
+    "tp": 2683
+  },
+  "identical_drs": 3733,
+  "missing_in_swi_run": [],
+  "tests_compared": 3733,
+  "tests_total": 3733,
+  "wall_seconds": 69.440517363
+}

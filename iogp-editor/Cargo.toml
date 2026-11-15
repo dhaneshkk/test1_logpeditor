@@ -1,0 +1,27 @@
+[package]
+name = "iogp-editor"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.98"
+description = "Controlled-English (ACE) editor for IOGP Life-Saving Rule alerts, compiled via ape-rs to first-order logic and detector configuration"
+license = "LGPL-3.0-or-later"
+
+[dependencies]
+ape-rs = { path = "../ape-rs" }
+acewiki-rs = { path = "../acewiki-rs" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+anyhow = "1"
+regex = "1"
+clap = { version = "4", features = ["derive", "env"] }
+axum = { version = "0.8", features = ["form", "query", "json"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "net", "time"] }
+maud = { version = "0.27", features = ["axum"] }
+sha2 = "0.10"
+iogp-runtime = { path = "iogp-runtime" }
+# rule review with clingo (answer set programming; builds clingo with CMake). Used while rules are
+# written and approved — never part of iogp-runtime, so never on the inference path.
+clingox = { version = "=508.2.0-beta.5", default-features = false, features = ["vendored", "threads"] }
+
+[profile.release]
+debug = false

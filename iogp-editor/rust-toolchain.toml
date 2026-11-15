@@ -1,0 +1,5 @@
+# Pinned toolchain for the whole IOGP stack (ape-rs, acewiki-rs, iogp-editor, iogp-runtime).
+# rustup installs it on first use (or: rustup toolchain install 1.98). clingox requires >= 1.98.
+[toolchain]
+channel = "1.98"
+profile = "minimal"

@@ -1,0 +1,32 @@
+# Acceptance test set: "+" sentences must compile to an alert rule, "-" sentences must be rejected.
+# Written by the author of iogp-editor (not an independent benchmark); used for the acceptance MCC.
++ok1: If a worker is in a height-zone then VisionGuard raises a critical working-at-height-alert for the worker.
++ok2: If a worker is near a crane for at least 10 seconds then VisionGuard raises a high line-of-fire-alert for the worker.
++ok3: If a forklift is in a walkway and a worker is in the walkway then VisionGuard raises a high line-of-fire-alert for the worker.
++ok4: If a worker is in a hot-work-area and does not wear a helmet for at least 5 seconds then VisionGuard raises a medium hot-work-alert for the worker.
++ok5: If a worker is on a ladder and does not wear a harness for at least 3 seconds then VisionGuard raises a critical working-at-height-alert for the worker.
++ok6: If a worker holds a phone for more than 10 seconds then VisionGuard raises a low driving-alert for the worker.
++ok7: If a vehicle is in a restricted-area and the restricted-area does not have a permit for at least 1 minute then VisionGuard raises a medium work-authorisation-alert.
++ok8: If at least 2 workers are in a confined-space for at least 30 seconds then VisionGuard raises a high confined-space-alert.
++ok9: If a worker that is in a live-equipment-zone does not wear a vest for at least 4 seconds then VisionGuard raises a medium energy-isolation-alert for the worker.
++ok10: If a flame is in a confined-space then VisionGuard raises a critical confined-space-alert.
+-bad1: If a worker does not wear a harness then VisionGuard raises a critical working-at-height-alert for the worker.
+-bad2: If a worker is in a height-zone and does not wear a harness then VisionGuard raises a critical working-at-height-alert for the worker.
+-bad3: If a worker sings then VisionGuard raises a critical line-of-fire-alert.
+-bad4: If a height-zone is in a worker then VisionGuard raises a critical working-at-height-alert.
+-bad5: If a worker is in a height-zone then VisionGuard raises a critical alert.
+-bad6: A worker is in a height-zone.
+-bad7: If a worker is in a height-zone then VisionGuard raises an urgent working-at-height-alert for the worker.
+-bad8: If a worker wears a permit then VisionGuard raises a low hot-work-alert for the worker.
+-bad9: If a worker is in a height-zone for at most 3 seconds then VisionGuard raises a critical working-at-height-alert for the worker.
+-bad10: If a worker is in a height-zone and the worker is a person then VisionGuard raises a critical working-at-height-alert for the worker.
+-bad11: If a worker is in a height-zone then a worker raises a critical working-at-height-alert.
+-bad12: If a worker is in a height-zone then VisionGuard raises a critical working-at-height-alert for the harness.
++ok11: If a worker is in Rig-Floor-East and does not wear a harness for at least 3 seconds then VisionGuard raises a critical working-at-height-alert for the worker.
++ok12: If a worker is in a height-zone of CAM-03 and does not wear a harness for at least 3 seconds then VisionGuard raises a critical working-at-height-alert for the worker.
++ok13: If a worker is in a restricted-area for at least 10 seconds then VisionGuard raises a high work-authorisation-alert for the worker unless the restricted-area has a permit.
++ok14: If a worker is in Moonpool then VisionGuard raises a high work-authorisation-alert for the worker unless Moonpool has a permit or the worker has a permit.
+-bad13: If a worker is in a height-zone then VisionGuard raises a critical working-at-height-alert for the worker unless the worker wears a harness.
+-bad14: If a worker is in CAM-03 then VisionGuard raises a critical working-at-height-alert for the worker.
+-bad15: If a worker is in a height-zone of CAM-09 then VisionGuard raises a critical working-at-height-alert for the worker.
+-bad16: If a worker is in a restricted-area then VisionGuard raises a high work-authorisation-alert for the worker unless the hot-work-area has a permit.

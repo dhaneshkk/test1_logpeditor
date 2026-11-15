@@ -1,0 +1,112 @@
+{
+  "elements": 447,
+  "load_seconds": 9.793069529,
+  "profile": "OWL2EL",
+  "reasoning": {
+    "answers": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 61164,
+      "tp": 612
+    },
+    "consistent": {
+      "java": true,
+      "rs": true
+    },
+    "examples": [],
+    "instances": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 26215,
+      "tp": 668
+    },
+    "questions_exact": "156/156",
+    "reasoner": "acewiki-rs native OWL 2 EL",
+    "satisfiable": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 0,
+      "tp": 87
+    },
+    "seconds": 5.425040145,
+    "sub": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 7435,
+      "tp": 47
+    },
+    "super": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 7435,
+      "tp": 47
+    },
+    "types": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 26215,
+      "tp": 668
+    }
+  },
+  "sentences": {
+    "examples": [],
+    "flags": {
+      "integrated": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 119,
+        "tp": 741
+      },
+      "owl": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 3,
+        "tp": 857
+      },
+      "owlswrl": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 3,
+        "tp": 857
+      },
+      "question": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 704,
+        "tp": 156
+      },
+      "reasonable": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 246,
+        "tp": 614
+      }
+    },
+    "n": 860,
+    "parser_tokens_identical": 860,
+    "text_identical": 860
+  },
+  "wiki": "geo"
+}

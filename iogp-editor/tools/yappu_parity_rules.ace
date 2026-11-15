@@ -1,0 +1,5 @@
+# Controlled-English equivalents of yappu-fsm's vision demo rules (yappu_fsm/data/vision_rules.ace),
+# in iogp-editor's ACE vocabulary. Used by `iogp-eval parity`.
+INTRUSION: If a person is in a restricted-area for at least 2 seconds then VisionGuard raises a high work-authorisation-alert for the person.
+PHONE: If a person holds a phone for at least 3 seconds then VisionGuard raises a medium driving-alert for the person.
+CROWD: If at least 2 persons are in a restricted-area then VisionGuard raises a high mechanical-lifting-alert.

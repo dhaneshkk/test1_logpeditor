@@ -1,0 +1,11 @@
+# build outputs
+target/
+*.class
+iogp-editor/iogp-runtime/examples/c/demo
+# local runtime state of the editor (rule store, audit log, compile attempts, users)
+iogp_rules.json
+iogp_rules.json.tmp
+iogp_rules.audit.jsonl
+iogp_rules.attempts.jsonl
+users.json
+*.ape-cache.json

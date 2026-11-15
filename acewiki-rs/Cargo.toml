@@ -1,0 +1,28 @@
+[package]
+name = "acewiki-rs"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.98"
+description = "AceWiki (controlled-natural-language semantic wiki) in Rust: ape-rs + Codeco chart parser + native OWL 2 EL/RL reasoner + OWLlink fallback + HTMX UI"
+license = "LGPL-3.0-or-later"   # AceWiki and APE are LGPL-3.0
+
+[dependencies]
+ape-rs = { path = "../ape-rs" }
+# fork branch with the read/1 end-of-file fix (dhaneshkk/scryer-prolog#fix/ape-rs-findings)
+scryer-prolog = { git = "https://github.com/dhaneshkk/scryer-prolog", branch = "fix/ape-rs-findings", default-features = false }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+clap = { version = "4", features = ["derive", "env"] }
+regex = "1"
+axum = { version = "0.8", features = ["form", "query", "json"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "net", "time"] }
+maud = { version = "0.27", features = ["axum"] }
+ureq = { version = "2", default-features = false }
+quick-xml = "0.37"
+sha2 = "0.10"
+anyhow = "1"
+tower-http = { version = "0.6", features = ["fs"] }
+mimalloc = { version = "0.1", default-features = false }
+
+[profile.release]
+debug = false

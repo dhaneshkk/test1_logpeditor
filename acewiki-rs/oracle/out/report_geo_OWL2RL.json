@@ -1,0 +1,129 @@
+{
+  "elements": 447,
+  "load_seconds": 10.642084278,
+  "parser": {
+    "abstract_options_identical": 6061,
+    "complete": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 4506,
+      "tp": 1555
+    },
+    "concrete_count_identical": 6061,
+    "concrete_options_identical": 6061,
+    "examples": [],
+    "prefixes": 6061,
+    "reference_identical": 6061,
+    "seconds": 24.09323209
+  },
+  "profile": "OWL2RL",
+  "reasoning": {
+    "answers": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 61031,
+      "tp": 745
+    },
+    "consistent": {
+      "java": true,
+      "rs": true
+    },
+    "examples": [],
+    "instances": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 26176,
+      "tp": 707
+    },
+    "questions_exact": "156/156",
+    "reasoner": "acewiki-rs native OWL 2 RL",
+    "satisfiable": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 0,
+      "tp": 87
+    },
+    "seconds": 0.624931155,
+    "sub": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 7435,
+      "tp": 47
+    },
+    "super": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 7435,
+      "tp": 47
+    },
+    "types": {
+      "agreement": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "mcc": 1.0,
+      "tn": 26176,
+      "tp": 707
+    }
+  },
+  "sentences": {
+    "examples": [],
+    "flags": {
+      "integrated": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 88,
+        "tp": 772
+      },
+      "owl": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 3,
+        "tp": 857
+      },
+      "owlswrl": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 3,
+        "tp": 857
+      },
+      "question": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 704,
+        "tp": 156
+      },
+      "reasonable": {
+        "agreement": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "mcc": 1.0,
+        "tn": 241,
+        "tp": 619
+      }
+    },
+    "n": 860,
+    "parser_tokens_identical": 860,
+    "text_identical": 860
+  },
+  "wiki": "geo"
+}
