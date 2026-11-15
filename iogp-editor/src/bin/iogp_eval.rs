@@ -1,5 +1,7 @@
 //! iogp-eval — MCC evaluation of compiled alert rules.
 //!
+//!   iogp-eval sample-site OUTDIR [--seed 7]
+//!       write a synthetic sample site in the raw replay format (site, detections, labels, rules)
 //!   iogp-eval yappu-ref FRAMES.jsonl [--seed 459]
 //!       regenerate yappu-fsm's parity frames with the Rust port of its vision engine
 //!   iogp-eval parity FRAMES.jsonl [--rules tools/yappu_parity_rules.ace]
@@ -49,6 +51,8 @@ enum Cmd {
     Corpus { attempts: PathBuf, #[arg(long)] store: Option<PathBuf> },
     /// regenerate the yappu-fsm parity frames (Rust port of yappu's vision engine; no Python)
     YappuRef { out: PathBuf, #[arg(long, default_value_t = 459)] seed: u64 },
+    /// write a SYNTHETIC sample site (site.json, detections.jsonl, labels.jsonl, rules.ace) for `replay`
+    SampleSite { out: PathBuf, #[arg(long, default_value_t = 7)] seed: u64 },
 }
 
 #[derive(Default, Clone, Copy)]
@@ -182,6 +186,11 @@ fn main() -> anyhow::Result<()> {
         println!("yappu-ref: {} frames -> {}", lines.len(), out.display());
         return Ok(());
     }
+    if let Cmd::SampleSite { out, seed } = &cli.cmd {
+        let s = iogp_editor::sample_site::write(out, *seed)?;
+        println!("{} camera frames, {} labelled incidents -> {}/", s.frames, s.incidents, out.display());
+        return Ok(());
+    }
     if let Cmd::Corpus { attempts, store } = &cli.cmd {
         let r = corpus(attempts, store.as_ref())?;
         if let Some(p) = cli.report { std::fs::write(p, serde_json::to_string_pretty(&r)?)?; }
@@ -212,7 +221,7 @@ fn main() -> anyhow::Result<()> {
         Cmd::Replay { site, detections, rules, store, labels, tolerance, frames_out, .. } => {
             replay(&mut c, &cat, &site, &detections, rules.as_ref(), store.as_ref(), labels.as_ref(), tolerance, frames_out.as_ref())?
         }
-        Cmd::Corpus { .. } | Cmd::YappuRef { .. } => unreachable!(),
+        Cmd::Corpus { .. } | Cmd::YappuRef { .. } | Cmd::SampleSite { .. } => unreachable!(),
         Cmd::Synthetic { seconds, miss, seed } => {
             let rules: Vec<Rule> = cat.templates.iter().map(|t| c.compile(&format!("LSR{}", t.lsr), &t.text).map_err(|e| anyhow::anyhow!("LSR{}: {:?}", t.lsr, e))).collect::<anyhow::Result<_>>()?;
             let (truth, noisy) = world(seconds, miss, seed);

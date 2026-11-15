@@ -14,6 +14,7 @@ pub mod drs;
 pub mod grammar;
 pub mod ingest;
 pub mod runtime;
+pub mod sample_site;
 pub mod store;
 pub mod suggest;
 pub mod web;

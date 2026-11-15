@@ -91,7 +91,7 @@ iogp_eval replay --site site.json --detections export.jsonl --store iogp_rules.j
 * **`site.json`**: per camera, the zone polygons (ids = named zones), an optional `px_per_metre`, a `class_map` from detector labels to catalog labels, and permit timelines.
 * **`export.jsonl`**: one line per camera frame, `{t | ts, camera, detections: [{track_id, class, bbox}], facts?}`.
 
-Facts are derived from geometry by the catalog's detector names, as documented in `src/ingest.rs`, or passed through when VisionGuard360 already computes them. Each camera gets its own engine. With **labels** (`{rule | "LSR9", start, end, camera?, subject?}`) the output adds incidents caught (recall), false alarms per hour, median alert latency and frame-level MCC. `tools/sample_vg360_log.py` writes a synthetic sample in this format.
+Facts are derived from geometry by the catalog's detector names, as documented in `src/ingest.rs`, or passed through when VisionGuard360 already computes them. Each camera gets its own engine. With **labels** (`{rule | "LSR9", start, end, camera?, subject?}`) the output adds incidents caught (recall), false alarms per hour, median alert latency and frame-level MCC. `iogp_eval sample-site OUTDIR` writes a synthetic sample in this format.
 
 **Collecting how officers write:**
 * Every complete sentence a user compiles is appended to `<rules>.attempts.jsonl`: editor, paste, save and API.
@@ -198,5 +198,5 @@ src/web.rs                UI + OpenAI-compatible API      src/bin/iogp.rs, iogp_
 src/suggest.rs            auto-suggestion engine          src/editor.js         auto-suggest text box
 src/asp.rs                rules -> clingo program; review (example scenes, dead rules, implications, coverage)
 src/yappu_ref.rs          yappu-fsm engine port (parity)  formal/IogpAlerts.lean
-tools/sample_vg360_log.py synthetic raw site log + labels
+src/sample_site.rs        synthetic raw site log + labels (iogp_eval sample-site)
 ```
