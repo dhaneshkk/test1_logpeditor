@@ -170,9 +170,10 @@ impl Engine {
         World { by_type, facts, camera }
     }
     fn remember(&mut self, f: &Frame) {
+        // every type an object was seen with stays believed for `grace` (an object may be a class and a zone)
         for o in &f.objects {
-            let ty = o.class.as_ref().map(|c| format!("class:{c}")).or_else(|| o.zone.as_ref().map(|z| format!("zone:{z}"))).or_else(|| o.signal.as_ref().map(|s| format!("signal:{s}")));
-            if let Some(ty) = ty { self.recent.entry(ty).or_default().insert(o.id.clone(), f.t); }
+            let tys = [o.class.as_ref().map(|c| format!("class:{c}")), o.zone.as_ref().map(|z| format!("zone:{z}")), o.signal.as_ref().map(|s| format!("signal:{s}"))];
+            for ty in tys.into_iter().flatten() { self.recent.entry(ty).or_default().insert(o.id.clone(), f.t); }
         }
         let g = self.timer.grace;
         for ids in self.recent.values_mut() { ids.retain(|_, last| f.t - *last <= g); }

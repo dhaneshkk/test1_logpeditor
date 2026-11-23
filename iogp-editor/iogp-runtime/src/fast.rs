@@ -71,7 +71,7 @@ impl Interner {
 pub enum Kind { Class = 0, Zone = 1, Signal = 2 }
 
 #[derive(Clone, Copy)]
-struct SObj { id: Sym, ty: Sym, cam: Sym, primary: bool }
+struct SObj { id: Sym, ty: Sym, cam: Sym }
 
 #[derive(Default)]
 struct SFrame { t: f64, cam: Sym, objs: Vec<SObj>, facts: Vec<(Sym, Sym, Sym)> }
@@ -157,13 +157,12 @@ impl Engine {
         self.sf.objs.clear();
         self.sf.facts.clear();
     }
-    /// Add an object (call once per type it has; the first call for an id is its primary type).
+    /// Add an object (call once per type it has; every type is remembered through missed frames).
     pub fn object(&mut self, id: &str, kind: Kind, ty: &str, camera: Option<&str>) {
         let id = self.sy.intern(id);
         let ty = self.ty_sym(kind, ty);
         let cam = camera.map(|c| self.sy.intern(c)).unwrap_or(NONE);
-        let primary = !self.sf.objs.iter().any(|o| o.id == id);
-        self.sf.objs.push(SObj { id, ty, cam, primary });
+        self.sf.objs.push(SObj { id, ty, cam });
     }
     pub fn fact(&mut self, rel: &str, a: &str, b: &str) {
         let f = (self.sy.intern(rel), self.sy.intern(a), self.sy.intern(b));
@@ -185,7 +184,7 @@ impl Engine {
                     let id = self.sy.intern(&o.id);
                     let tys = self.ty_sym(k, ty);
                     let c = cam.map(|c| self.sy.intern(c)).unwrap_or(NONE);
-                    self.sf.objs.push(SObj { id, ty: tys, cam: c, primary: first });
+                    self.sf.objs.push(SObj { id, ty: tys, cam: c });
                     first = false;
                 }
             }
@@ -193,7 +192,7 @@ impl Engine {
                 // an object with no type still has a camera for the camera map
                 let id = self.sy.intern(&o.id);
                 let c = cam.map(|c| self.sy.intern(c)).unwrap_or(NONE);
-                self.sf.objs.push(SObj { id, ty: NONE, cam: c, primary: false });
+                self.sf.objs.push(SObj { id, ty: NONE, cam: c });
             }
         }
         for (r, a, b) in &f.facts { self.fact(r, a, b); }
@@ -309,7 +308,8 @@ impl Engine {
         let fno = self.frame_no;
         for per_rule in &mut self.timers { for tm in per_rule { tm.retain(|_, s| s.seen == fno || t - s.last <= timer_grace); } }
         // remember what was seen (candidates and smoothed facts for later frames)
-        for o in &self.sf.objs { if o.primary && o.ty != NONE { self.recent.entry(o.ty).or_default().insert(o.id, t); } }
+        // every type an object was seen with stays believed for `grace` — not only its first one
+        for o in &self.sf.objs { if o.ty != NONE { self.recent.entry(o.ty).or_default().insert(o.id, t); } }
         for ids in self.recent.values_mut() { ids.retain(|_, last| t - *last <= g); }
         if self.smoothing {
             for f in &self.sf.facts { self.fact_seen.insert(*f, t); }
