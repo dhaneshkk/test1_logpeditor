@@ -50,5 +50,4 @@ vision engine (byte-identical to the original Python output), then `iogp_eval pa
 
 ## Licence
 
-LGPL-3.0-or-later. APE and AceWiki are LGPL-3.0, Scryer Prolog is BSD-3-Clause, and clingo,
-through clingox, is MIT.
+ MIT.
