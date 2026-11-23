@@ -63,7 +63,8 @@ Use one engine per camera stream.
 ## Correctness
 
 `reference::Engine` is the straightforward evaluator that defines the semantics: evidence
-smoothing, duration timers, positive evidence, counts, scoping, exceptions, and an alert machine
+smoothing (every type an object was seen with — class, zone, signal, or several classes on one id —
+stays believed for `grace` seconds), duration timers, positive evidence, counts, scoping, exceptions, and an alert machine
 that raises once and then cools down. `tests/differential.rs` runs both engines on 72,000 noisy
 multi-camera frames in all three modes (smoothing, yappu-compatible, per-frame). It requires
 identical events (kind, rule, subject, alert, LSR, severity, time, in order) and identical active

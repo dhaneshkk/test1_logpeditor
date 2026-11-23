@@ -137,3 +137,46 @@ fn config_errors_are_reported() {
     let e = Engine::from_config(&bad).err().map(|e| e.to_string()).unwrap_or_default();
     assert!(e.contains("rule LSR1") && (e.contains("undefined variable") || e.contains("not an outer variable")), "{e}");
 }
+
+/// An object can have more than one type: a zone that is also a detected class, or a track that is both
+/// a `person` and a `fall_pose`. Every type must stay believed for `grace` seconds after it was last
+/// seen, not only the first one — otherwise one missed frame drops the object from the rule's binding
+/// and restarts its "for at least" timer. Here a height-zone that is also a detected ladder is missed
+/// for one frame at t = 1.5 s while a worker stands in it without a harness: LSR9 (3 s) must still be
+/// raised at t = 3.0 s, by the reference engine, by the fast engine's frame API and by its builder API
+/// (where the second type of an id used to be ignored when remembering).
+#[test]
+fn every_type_of_an_object_is_bridged_over_missed_frames() {
+    let rs = load_config(CONFIG).unwrap();
+    let frame = |k: usize| -> Frame {
+        let t = k as f64 * 0.1;
+        let mut objects = vec![Object { id: "7".into(), class: Some("person".into()), ..Default::default() }];
+        if k != 15 {
+            objects.push(Object { id: "Z1".into(), class: Some("ladder".into()), zone: Some("height-zone".into()), ..Default::default() });
+        }
+        Frame { t, objects, facts: vec![("in".into(), "7".into(), "Z1".into())], camera: None }
+    };
+    let raised = |evs: &[iogp_runtime::AlertEvent], t: f64| evs.iter().filter(|e| e.kind == "raised" && e.rule == "LSR9").map(|_| t).next();
+    let (mut r, mut f, mut b) = (reference::Engine::new(rs.rules.clone(), rs.grace_seconds, rs.cooldown_seconds),
+                                 Engine::new(rs.rules.clone(), rs.grace_seconds, rs.cooldown_seconds),
+                                 Engine::new(rs.rules.clone(), rs.grace_seconds, rs.cooldown_seconds));
+    let (mut tr, mut tf, mut tb) = (None, None, None);
+    for k in 0..60 {
+        let fr = frame(k);
+        tr = tr.or(raised(&r.step(&fr), fr.t));
+        tf = tf.or(raised(&f.step(&fr), fr.t));
+        // builder API, class given first: the zone type is the id's *second* type
+        b.begin(fr.t, None);
+        for o in &fr.objects {
+            use iogp_runtime::fast::Kind;
+            if let Some(c) = &o.class { b.object(&o.id, Kind::Class, c, None); }
+            if let Some(z) = &o.zone { b.object(&o.id, Kind::Zone, z, None); }
+        }
+        for (x, y, z) in &fr.facts { b.fact(x, y, z); }
+        tb = tb.or(raised(b.end(), fr.t));
+    }
+    let close = |t: Option<f64>| t.is_some_and(|t| (t - 3.0).abs() < 1e-9);
+    assert!(close(tr), "reference engine raised LSR9 at {tr:?}, expected 3.0");
+    assert!(close(tf), "fast engine (frame API) raised LSR9 at {tf:?}, expected 3.0");
+    assert!(close(tb), "fast engine (builder API) raised LSR9 at {tb:?}, expected 3.0");
+}
