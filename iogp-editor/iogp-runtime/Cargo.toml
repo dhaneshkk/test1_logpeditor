@@ -2,7 +2,7 @@
 name = "iogp-runtime"
 version = "0.1.0"
 edition = "2021"
-rust-version = "1.98"
+rust-version = "1.97"  # serde only; the editor needs 1.98 for clingox, this does not
 description = "Inference-time evaluator for compiled IOGP alert rules (config.json from iogp-editor). No parser, no Prolog, no solver: serde only. Rust API and C ABI."
 license = "MIT"
 
