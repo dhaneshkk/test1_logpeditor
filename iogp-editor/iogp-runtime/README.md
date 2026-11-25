@@ -70,3 +70,9 @@ multi-camera frames in all three modes (smoothing, yappu-compatible, per-frame).
 identical events (kind, rule, subject, alert, LSR, severity, time, in order) and identical active
 sets after every frame: 16,027 events so far. The Lean proofs in `../formal/IogpAlerts.lean`
 describe the reference semantics.
+
+## Licence
+
+MIT (`LICENSE`). Only this crate: it is original code and depends on nothing but serde, so a
+detection pipeline (tamserve-boxes, VisionGuard360) can link it statically. The editor around it
+(`iogp-editor`, `ape-rs`, `acewiki-rs`) stays LGPL-3.0-or-later, because APE and AceWiki are.

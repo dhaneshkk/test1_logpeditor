@@ -1,5 +1,7 @@
 /* iogp_runtime.h — inference-time evaluator for IOGP alert rules (config.json from iogp-editor).
  *
+ * SPDX-License-Identifier: MIT
+ *
  * Link with libiogp_runtime.a (static) or libiogp_runtime.so (dynamic); on Linux add -lpthread -ldl -lm.
  * One engine per camera stream. An engine may move between threads but must not be used by two
  * threads at once. All strings are UTF-8 and NUL-terminated.

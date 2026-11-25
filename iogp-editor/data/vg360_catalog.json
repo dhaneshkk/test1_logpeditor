@@ -208,6 +208,11 @@
       "noun": "gas-test",
       "plural": "gas-tests",
       "source": "gas-test log"
+    },
+    {
+      "noun": "calibration-loss",
+      "plural": "calibration-losses",
+      "source": "camera drift check (tamserve-boxes: floor calibration UNKNOWN)"
     }
   ],
   "alerts": [
