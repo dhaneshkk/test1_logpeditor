@@ -77,3 +77,32 @@ fn scoping_and_exceptions_at_runtime() { run_with_stack(|| {
     let mut o = zones(); o.push(obj("w1", Some("person"), None, None, None));
     assert_eq!(ev(f(2.0, o, vec![("in", "w1", "Moonpool"), ("in", "w1", "hz3")])), vec!["MOON:w1".to_string()]);
 })}
+
+/// tamserve-boxes / vg360-scenegraph emit a `calibration-loss` signal on every zone while the
+/// floor calibration is UNKNOWN (no position facts then). A rule on it compiles and fires on
+/// exactly those facts, with no worker position involved.
+#[test]
+fn calibration_loss_signal() { run_with_stack(|| {
+    let mut c = compiler();
+    let r = c.compile("CAL", "If a height-zone has a calibration-loss then VisionGuard raises a high working-at-height-alert.").unwrap();
+    let mut eng = Engine::new(vec![r], 0.7, 3.0);
+    let frame = |t: f64, lost: bool| {
+        let mut objects = vec![obj("Rig-Floor-East", None, Some("height-zone"), None, Some("CAM-03"))];
+        let mut facts = vec![];
+        if lost {
+            objects.push(obj("CAM-03/calibration-loss", None, None, Some("calibration-loss"), None));
+            facts.push(("have".to_string(), "Rig-Floor-East".to_string(), "CAM-03/calibration-loss".to_string()));
+        }
+        Frame { t, objects, facts, camera: Some("CAM-03".into()) }
+    };
+    let mut kinds = vec![];
+    for i in 0..100 {
+        let t = i as f64 / 10.0;
+        for e in eng.step(&frame(t, (2.0..5.0).contains(&t))) { kinds.push((e.kind.clone(), e.t)); }
+    }
+    assert_eq!(kinds.first().map(|k| k.0.as_str()), Some("raised"), "{kinds:?}");
+    assert!((kinds[0].1 - 2.0).abs() < 1e-6, "{kinds:?}");
+    assert!(kinds.iter().any(|k| k.0 == "cleared"), "{kinds:?}");
+    // the noun is known to the editor
+    assert!(c.compile("t", "If a height-zone has a calibration-losss then VisionGuard raises a high working-at-height-alert.").is_err());
+})}

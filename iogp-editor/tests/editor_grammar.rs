@@ -41,7 +41,8 @@ fn suggestions_respect_sorts() {
     let mut p = g.parser();
     acewiki_rs::web::feed_text(&mut p, "If a restricted-area has a").unwrap();
     let words: Vec<String> = p.next_token_options().con.iter().map(|c| c.word.clone()).collect();
-    assert_eq!(words, vec!["permit".to_string(), "gas-test".to_string()].into_iter().filter(|w| words.contains(w)).collect::<Vec<_>>());
+    assert_eq!(words, vec!["permit".to_string(), "gas-test".to_string(), "calibration-loss".to_string()].into_iter().filter(|w| words.contains(w)).collect::<Vec<_>>());
+    assert!(words.contains(&"calibration-loss".to_string()), "the camera drift signal is a signal: {words:?}");
     assert!(!words.contains(&"worker".to_string()));
 }
 

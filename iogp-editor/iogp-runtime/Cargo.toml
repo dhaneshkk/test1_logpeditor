@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 rust-version = "1.98"
 description = "Inference-time evaluator for compiled IOGP alert rules (config.json from iogp-editor). No parser, no Prolog, no solver: serde only. Rust API and C ABI."
-license = "LGPL-3.0-or-later"
+license = "MIT"
 
 [lib]
 crate-type = ["rlib", "staticlib", "cdylib"]
